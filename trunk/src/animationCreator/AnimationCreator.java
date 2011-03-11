@@ -8,7 +8,7 @@ package animationCreator;
  * @version 0.1
  * 
  */
-public class MainAnimationCreator {
+public class AnimationCreator {
 	private static CreatorBoundingBoxes creatorBB;
 
 	public static void main(String[] args) {
