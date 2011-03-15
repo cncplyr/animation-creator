@@ -1,5 +1,9 @@
 package animationCreator;
 
+import blackBox.BlackBox;
+import blackBox.BlackBoxProbMotif;
+import fileHandling.CSVHandler;
+
 
 /**
  * This class acts as the entry point to the project.
@@ -9,12 +13,21 @@ package animationCreator;
  * 
  */
 public class AnimationCreator {
-	private static CreatorBoundingBoxes creatorBB;
-
+	private static AnalyseBoundingBoxes analyseBBoxes;
+	private static CSVHandler csvHandler;
+	private static BlackBox blackBox;
+	
 	public static void main(String[] args) {
-		creatorBB = new CreatorBoundingBoxes();
+		analyseBBoxes = new AnalyseBoundingBoxes();
+		// Create our csv handler
+		csvHandler = new CSVHandler();
+		// TODO: Set up csv handling to point to what we want
 
-		creatorBB.generateBoundingBoxes();
+		// Create our black box, with the data.
+		blackBox = new BlackBoxProbMotif();
+		blackBox.setData(analyseBBoxes.getAspectRatios(csvHandler.readCSVint()));
 
+		// Run that black box!
+		blackBox.createAnimations();
 	}
 }
