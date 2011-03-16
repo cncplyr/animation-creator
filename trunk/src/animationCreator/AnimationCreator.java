@@ -24,11 +24,14 @@ public class AnimationCreator {
 		// TODO: Set up csv handling to point to what we want
 
 		// Create our black box, with the data.
-		blackBox = new BlackBoxProbMotif();
-		blackBox.setData(analyseBBoxes.getAspectRatios(csvHandler.readCSVint()));
+		try {
+			blackBox = new BlackBoxProbMotif(analyseBBoxes.getAspectRatios(csvHandler.readCSVint()), 10, 1, 4, 0, 20, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Run that black box!
-		blackBox.createAnimations();
+		blackBox.iterate(10);
 
 		int[][] array = blackBox.getMatrixArray();
 		int x = array.length;
