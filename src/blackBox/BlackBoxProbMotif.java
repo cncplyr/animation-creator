@@ -14,12 +14,16 @@ public class BlackBoxProbMotif implements BlackBox {
 	int maskSize;
 	Vector<Vector<Integer>> matrix;
 	int[][] matrixArray;
+	int framesPerLetter;
+	int alphaSize; // size of alphabet
 
 	public BlackBoxProbMotif() {
 		this.kMotifs = 5;
 		this.subsequenceLength = 5;
 		this.errorRange = 5;
 		this.maskSize = subsequenceLength / 2;
+		this.framesPerLetter = 4;
+		this.alphaSize = 5;
 	}
 
 	@Override
@@ -29,6 +33,37 @@ public class BlackBoxProbMotif implements BlackBox {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<String> symbolise() {
+		List<Float> paa = new ArrayList<Float>();
+		List<String> symbolData = new ArrayList<String>();
+		int finalFrame = data.size() - framesPerLetter;
+
+		/* Create Piecewise Aggregate Approximation (PAA) */
+		int startFrame = 0;
+		Float currentAvg;
+		// Sliding window through data
+		while (startFrame < finalFrame) {
+			// Calculate average of current window
+			currentAvg = 0.0f;
+			for (int f = startFrame; f < startFrame + framesPerLetter; f++) {
+				currentAvg += data.get(f);
+			}
+			currentAvg = currentAvg / framesPerLetter;
+
+			// Store current average to PAA
+			paa.add(currentAvg);
+
+			// Move sliding window
+			startFrame += framesPerLetter;
+		}
+
+		/* Discretise into symbols */
+		// TODO: use gaussian for symbols
+		
+
+		return symbolData;
 	}
 
 	public void findMotif() throws Exception {
@@ -86,6 +121,7 @@ public class BlackBoxProbMotif implements BlackBox {
 					value += data.get(startFrame + subframe);
 				}
 			}
+			System.out.println("Hashing (K, V): " + value + ", " + startFrame);
 			// hash it
 			putIntoBucket(hashMap, value, startFrame);
 		}
@@ -96,10 +132,18 @@ public class BlackBoxProbMotif implements BlackBox {
 		return matrixArray;
 	}
 
+	public void setAlphaSize(int size) {
+		this.alphaSize = size;
+	}
+
 	@Override
 	public void setData(List<Float> dataList) {
 		System.out.println("set data: " + dataList.size());
 		data = dataList;
+	}
+
+	public void setFramesPerLetter(int w) {
+		this.framesPerLetter = w;
 	}
 
 	public void setMaskSize(int size) {
@@ -115,7 +159,9 @@ public class BlackBoxProbMotif implements BlackBox {
 		List<Integer> bucket = new ArrayList<Integer>();
 		// If bucket already exists
 		if (hash.containsKey(key)) {
-			System.out.println("Collision! " + value);
+			System.out.println("Collision! New: " + value);
+			List<Integer> oldVals = hash.get(key);
+			System.out.println("Collides with " + oldVals.size() + " values");
 			// Copy existing bucket into new bucket
 			bucket.addAll(hash.get(key));
 			// update collision matrix
