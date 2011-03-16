@@ -8,4 +8,6 @@ public interface BlackBox {
 
 	void createAnimations();
 
+	int[][] getMatrixArray();
+
 }

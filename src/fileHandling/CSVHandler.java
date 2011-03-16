@@ -33,6 +33,8 @@ public class CSVHandler {
 	 *         Each array represents a single row.
 	 */
 	public List<int[]> readCSVint() {
+		// TODO: Change this to read each line in turn, then add to convertedEntries, saving the creation of storedEntries?
+		// Might be more memory efficient
 		CSVReader reader;
 		// The strings pulled from file
 		List<String[]> storedEntries = new ArrayList<String[]>();
@@ -51,8 +53,8 @@ public class CSVHandler {
 
 		// The current list contains strings, so we convert them.
 		int size = storedEntries.get(0).length;
-		int[] convertedRow = new int[size];
 		for (String[] row : storedEntries) {
+			int[] convertedRow = new int[size];
 			for (int i = 0; i < size; i++) {
 				convertedRow[i] = Integer.parseInt(row[i]);
 			}
