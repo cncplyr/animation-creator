@@ -14,6 +14,16 @@ public class AnalyseBoundingBoxes {
 	}
 
 
+	/**
+	 * Takes a list of coordinates (startX, startY) (endX, endY), and converts
+	 * them to aspect ratios.
+	 * 
+	 * @param boundingBoxes
+	 *            <code>List</code> of array of <code>int</code> in the form
+	 *            (startX, startY, endX, endY).
+	 * @return <code>List</code> of <code>Float</code> of aspect ratio (width
+	 *         divided by height).
+	 */
 	public List<Float> getAspectRatios(List<int[]> boundingBoxes) {
 		List<Float> aspectRatios = new ArrayList<Float>();
 
