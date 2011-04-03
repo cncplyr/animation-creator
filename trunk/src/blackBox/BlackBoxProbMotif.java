@@ -24,7 +24,7 @@ public class BlackBoxProbMotif implements BlackBox {
 	/* Collision Matrix Variables */
 	int[][] matrixArray;
 
-	/* Unknown */
+	/* TODO: Unknown */
 	int errorRange;
 
 
@@ -196,7 +196,6 @@ public class BlackBoxProbMotif implements BlackBox {
 		String value;
 		// For each starting frame
 		for (int startFrame = 0; startFrame < matrixSize; startFrame++) {
-			// TODO: Change to use data symbols, not actual data
 			value = "";
 			// get each of the frames of the correct length
 			for (int subframe = 0; subframe < subsequenceLength; subframe++) {
@@ -216,7 +215,7 @@ public class BlackBoxProbMotif implements BlackBox {
 		return matrixArray;
 	}
 
-	// TODO: Should these be edit-able at all after initialisation? Or should
+	// TODO: Should these be edit-able at all after instantiation? Or should
 	// each instance of this class only support one data set?
 	//
 	// public void setAlphaSize(int size) {
