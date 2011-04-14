@@ -24,11 +24,11 @@ public class AnalyseMetrics {
 	 * @return <code>List</code> of <code>Float</code> of aspect ratio (width
 	 *         divided by height).
 	 */
-	public List<Float> getAspectRatios(List<Metrics> metrics) {
-		List<Float> aspectRatios = new ArrayList<Float>();
+	public List<Double> getAspectRatios(List<Metrics> metrics) {
+		List<Double> aspectRatios = new ArrayList<Double>();
 
 		for (Metrics m : metrics) {
-			aspectRatios.add((float) ((m.getAbsEndX() - m.getAbsStartX()) / (m.getAbsEndY() - m.getAbsStartY())));
+			aspectRatios.add(((double) (m.getAbsEndX() - m.getAbsStartX())) / ((double) ((m.getAbsEndY() - m.getAbsStartY()))));
 		}
 
 		return aspectRatios;
