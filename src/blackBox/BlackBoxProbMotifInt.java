@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import fileHandling.CSVHandler;
+
+import maths.AverageFinder;
+import maths.StandardDeviation;
+
 public class BlackBoxProbMotifInt implements BlackBox {
 	/* Data Variables */
 	List<Integer> data;
@@ -27,6 +32,7 @@ public class BlackBoxProbMotifInt implements BlackBox {
 	/* TODO: Unknown */
 	int errorRange;
 
+	List<String> alphabet;
 
 	/**
 	 * Default Constructor.
@@ -70,9 +76,37 @@ public class BlackBoxProbMotifInt implements BlackBox {
 		this.kMotifs = kMotifs;
 		this.subsequenceLength = subsequenceLength;
 		this.errorRange = errorRange;
+		alphabet = new ArrayList<String>();
+		alphabet.add("A");
+		alphabet.add("B");
+		alphabet.add("C");
+		alphabet.add("D");
+		alphabet.add("E");
+		alphabet.add("F");
+		alphabet.add("G");
+		alphabet.add("H");
+		alphabet.add("I");
+		alphabet.add("J");
+		alphabet.add("K");
+		alphabet.add("L");
+		alphabet.add("M");
+		alphabet.add("N");
+		alphabet.add("O");
+		alphabet.add("P");
+		alphabet.add("Q");
+		alphabet.add("R");
+		alphabet.add("S");
+		alphabet.add("T");
+		alphabet.add("U");
+		alphabet.add("V");
+		alphabet.add("W");
+		alphabet.add("X");
+		alphabet.add("Y");
+		alphabet.add("Z");
+
 
 		/* Symbolise input data */
-		symbolData = symbolise(data);
+		symbolData = symboliseGaussian(data);
 		int matrixSize = symbolData.size() - subsequenceLength;
 		matrixArray = new int[matrixSize][matrixSize];
 
@@ -100,68 +134,6 @@ public class BlackBoxProbMotifInt implements BlackBox {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	/**
-	 * Takes a list of floats, and symbolises it by Piecewise Aggregate
-	 * Approximation, followed by labelling it with a discrete alphabet.
-	 * 
-	 * @param data
-	 * @return
-	 */
-	private List<String> symbolise(List<Integer> data) {
-		List<Integer> paa = new ArrayList<Integer>();
-		List<String> symbolData = new ArrayList<String>();
-		int finalFrame = data.size() - framesPerLetter;
-		Integer high = data.get(0);
-		Integer low = data.get(0);
-
-		/* Create Piecewise Aggregate Approximation (PAA) */
-		int startFrame = 0;
-		Integer currentAvg;
-		Integer currentFrame;
-		// Sliding window through data
-		while (startFrame < finalFrame) {
-			// Calculate average of current window
-			currentAvg = 0;
-			for (int f = startFrame; f < startFrame + framesPerLetter; f++) {
-				currentFrame = data.get(f);
-				currentAvg += currentFrame;
-				if (currentFrame > high) {
-					high = currentFrame;
-				} else if (currentFrame < low) {
-					low = currentFrame;
-				}
-			}
-			currentAvg = currentAvg / framesPerLetter;
-
-			// Store current average to PAA
-			paa.add(currentAvg);
-
-			// Move sliding window
-			startFrame += framesPerLetter;
-		}
-
-		/* Group into discrete symbols */
-		// TODO: use gaussian for symbols
-		List<String> alphabet = new ArrayList<String>();
-		for (int i = 0; i < alphaSize; i++) {
-			alphabet.add(Integer.toString(i));
-		}
-
-		Integer size = high - low;
-		Integer boundary = size / alphaSize;
-
-		for (Integer avg : paa) {
-			for (int i = 0; i < alphaSize; i++) {
-				if (avg < low + ((i + 1) * boundary)) {
-					symbolData.add(alphabet.get(i));
-					break;
-				}
-			}
-		}
-		return symbolData;
 	}
 
 	public void findMotif(List<String> symbolisedData) throws Exception {
@@ -210,36 +182,82 @@ public class BlackBoxProbMotifInt implements BlackBox {
 		}
 	}
 
-
 	public int[][] getMatrixArray() {
 		return matrixArray;
 	}
 
-	// TODO: Should these be edit-able at all after instantiation? Or should
-	// each instance of this class only support one data set?
-	//
-	// public void setAlphaSize(int size) {
-	// this.alphaSize = size;
-	// }
-	//
-	// @Override
-	// public void setData(List<Float> dataList) {
-	// System.out.println("set data: " + dataList.size());
-	// data = dataList;
-	// symbolData = symbolise(data);
-	// }
-	//
-	// public void setFramesPerLetter(int w) {
-	// this.framesPerLetter = w;
-	// }
-	//
-	// public void setMaskSize(int size) {
-	// this.maskSize = size;
-	// }
-	//
-	// public void setSubLength(int length) {
-	// this.subsequenceLength = length;
-	// }
+	/**
+	 * Takes a list of integers, and symbolises it by Piecewise Aggregate
+	 * Approximation, followed by labelling it with a discrete alphabet, using a
+	 * normal distribution.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private List<String> symboliseGaussian(List<Integer> data) {
+		AverageFinder avgFinder = new AverageFinder();
+		StandardDeviation sdFinder = new StandardDeviation();
+		List<Double> paa = new ArrayList<Double>();
+		List<String> symbolData = new ArrayList<String>();
+		int finalFrame = data.size() - framesPerLetter;
+
+		// Get break points
+		List<Double> breakPoints = findBreakPoints();
+
+		// Create Piecewise Aggregate Approximation (PAA)
+		int startFrame = 0;
+		Double currentAvg;
+		Double currentFrame;
+		// Sliding window through data
+		while (startFrame < finalFrame) {
+			// Calculate average of current window
+			currentAvg = 0.0d;
+			for (int f = startFrame; f < startFrame + framesPerLetter; f++) {
+				currentFrame = (double) data.get(f);
+				currentAvg += currentFrame;
+			}
+			currentAvg = currentAvg / framesPerLetter;
+
+			// Store current average to PAA
+			paa.add(currentAvg);
+
+			// Move sliding window
+			startFrame += framesPerLetter;
+		}
+
+		// Normalise data
+		Double mean = avgFinder.findMeanDouble(paa);
+		Double sd = sdFinder.findSDDouble(paa);
+		for (int i = 0; i < paa.size(); i++) {
+			paa.set(i, (paa.get(i) - mean) / sd);
+		}
+
+		// Symbolise data using Normal Distribution
+		boolean assigned = false;
+		for (Double avg : paa) {
+			for (int i = 0; i < breakPoints.size(); i++) {
+				if (avg <= breakPoints.get(i)) {
+					symbolData.add(alphabet.get(i));
+					assigned = true;
+					break;
+				}
+			}
+			if (!assigned) {
+				symbolData.add(alphabet.get(breakPoints.size()));
+			}
+			assigned = false;
+		}
+
+		// Return symbolised data
+		return symbolData;
+	}
+
+	private List<Double> findBreakPoints() {
+		CSVHandler csvh = new CSVHandler();
+		csvh.setCSVFolder("data");
+		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
+		return breakpoints.get(alphaSize - 1);
+	}
 
 	private void putIntoBucket(HashMap<String, List<Integer>> hash, String key, Integer value) {
 		// Create a bucket

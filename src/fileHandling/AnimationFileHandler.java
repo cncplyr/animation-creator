@@ -48,6 +48,7 @@ public class AnimationFileHandler {
 				if (x == y) {
 					matrixImage.setRGB(y, height - x - 1, Color.GREEN.getRGB());
 				} else if (matrix[x][y] > 3) {
+//					System.out.println(x + " matches " + y);
 					matrixImage.setRGB(y, height - x - 1, Color.RED.getRGB());
 				} else if (matrix[x][y] > 1) {
 					matrixImage.setRGB(y, height - x - 1, Color.BLACK.getRGB());

@@ -32,6 +32,8 @@ public class BlackBoxProbMotif implements BlackBox {
 	/* TODO: Unknown */
 	int errorRange;
 
+	List<String> alphabet;
+
 
 	/**
 	 * Default Constructor.
@@ -75,6 +77,33 @@ public class BlackBoxProbMotif implements BlackBox {
 		this.kMotifs = kMotifs;
 		this.subsequenceLength = subsequenceLength;
 		this.errorRange = errorRange;
+		alphabet = new ArrayList<String>();
+		alphabet.add("A");
+		alphabet.add("B");
+		alphabet.add("C");
+		alphabet.add("D");
+		alphabet.add("E");
+		alphabet.add("F");
+		alphabet.add("G");
+		alphabet.add("H");
+		alphabet.add("I");
+		alphabet.add("J");
+		alphabet.add("K");
+		alphabet.add("L");
+		alphabet.add("M");
+		alphabet.add("N");
+		alphabet.add("O");
+		alphabet.add("P");
+		alphabet.add("Q");
+		alphabet.add("R");
+		alphabet.add("S");
+		alphabet.add("T");
+		alphabet.add("U");
+		alphabet.add("V");
+		alphabet.add("W");
+		alphabet.add("X");
+		alphabet.add("Y");
+		alphabet.add("Z");
 
 		/* Symbolise input data */
 		symbolData = symboliseGaussian(data);
@@ -160,69 +189,7 @@ public class BlackBoxProbMotif implements BlackBox {
 	}
 
 	/**
-	 * Takes a list of floats, and symbolises it by Piecewise Aggregate
-	 * Approximation, followed by labelling it with a discrete alphabet.
-	 * 
-	 * @param data
-	 * @return
-	 */
-	// private List<String> symboliseEven(List<Double> data) {
-	// List<Double> paa = new ArrayList<Double>();
-	// List<String> symbolData = new ArrayList<String>();
-	// int finalFrame = data.size() - framesPerLetter;
-	// Double high = data.get(0);
-	// Double low = data.get(0);
-	//
-	// /* Create Piecewise Aggregate Approximation (PAA) */
-	// int startFrame = 0;
-	// Double currentAvg;
-	// Double currentFrame;
-	// // Sliding window through data
-	// while (startFrame < finalFrame) {
-	// // Calculate average of current window
-	// currentAvg = 0.0d;
-	// for (int f = startFrame; f < startFrame + framesPerLetter; f++) {
-	// currentFrame = data.get(f);
-	// currentAvg += currentFrame;
-	// if (currentFrame > high) {
-	// high = currentFrame;
-	// } else if (currentFrame < low) {
-	// low = currentFrame;
-	// }
-	// }
-	// currentAvg = currentAvg / framesPerLetter;
-	//
-	// // Store current average to PAA
-	// paa.add(currentAvg);
-	//
-	// // Move sliding window
-	// startFrame += framesPerLetter;
-	// }
-	//
-	// /* Group into discrete symbols */
-	// List<String> alphabet = new ArrayList<String>();
-	// for (int i = 0; i < alphaSize; i++) {
-	// alphabet.add(Integer.toString(i));
-	// }
-	//
-	//
-	//
-	// Double size = high - low;
-	// Double boundary = size / alphaSize;
-	//
-	// for (Double avg : paa) {
-	// for (int i = 0; i < alphaSize; i++) {
-	// if (avg < low + ((i + 1) * boundary)) {
-	// symbolData.add(alphabet.get(i));
-	// break;
-	// }
-	// }
-	// }
-	// return symbolData;
-	// }
-
-	/**
-	 * Takes a list of floats, and symbolises it by Piecewise Aggregate
+	 * Takes a list of doubles, and symbolises it by Piecewise Aggregate
 	 * Approximation, followed by labelling it with a discrete alphabet, using a
 	 * normal distribution.
 	 * 
@@ -239,12 +206,6 @@ public class BlackBoxProbMotif implements BlackBox {
 		// Get break points
 		List<Double> breakPoints = findBreakPoints();
 
-		// Generate Alphabet
-		List<String> alphabet = new ArrayList<String>();
-		for (int i = 0; i < alphaSize; i++) {
-			alphabet.add(Integer.toString(i));
-		}
-
 		// Create Piecewise Aggregate Approximation (PAA)
 		int startFrame = 0;
 		Double currentAvg;
@@ -258,7 +219,6 @@ public class BlackBoxProbMotif implements BlackBox {
 				currentAvg += currentFrame;
 			}
 			currentAvg = currentAvg / framesPerLetter;
-
 			// Store current average to PAA
 			paa.add(currentAvg);
 
@@ -295,7 +255,7 @@ public class BlackBoxProbMotif implements BlackBox {
 
 	private List<Double> findBreakPoints() {
 		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("output");
+		csvh.setCSVFolder("data");
 		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
 		return breakpoints.get(alphaSize - 1);
 	}
@@ -319,30 +279,4 @@ public class BlackBoxProbMotif implements BlackBox {
 		// Replace old bucket with new bucket
 		hash.put(key, bucket);
 	}
-
-	// TODO: Should these be edit-able at all after instantiation? Or should
-	// each instance of this class only support one data set?
-	//
-	// public void setAlphaSize(int size) {
-	// this.alphaSize = size;
-	// }
-	//
-	// @Override
-	// public void setData(List<Float> dataList) {
-	// System.out.println("set data: " + dataList.size());
-	// data = dataList;
-	// symbolData = symbolise(data);
-	// }
-	//
-	// public void setFramesPerLetter(int w) {
-	// this.framesPerLetter = w;
-	// }
-	//
-	// public void setMaskSize(int size) {
-	// this.maskSize = size;
-	// }
-	//
-	// public void setSubLength(int length) {
-	// this.subsequenceLength = length;
-	// }
 }
