@@ -34,17 +34,14 @@ public class AnimationCreator {
 
 		// Create our black box, with the data.
 		try {
-			 blackBox = new
-			 BlackBoxProbMotif(analyseMetrics.getAspectRatios(metrics), 10, 1,
-			 4, 0, 20, 0);
-//			blackBox = new BlackBoxProbMotifInt(analyseMetrics.getXCentroid(metrics), 10, 1, 4, 0, 20, 0);
-//			 blackBox = new
-//			 BlackBoxProbMotifInt(analyseMetrics.getXEccentricity(metrics),
-//			 10, 1, 4, 0, 20, 0);
-			/* TODO: velocities doesn't work very well yet */
+			blackBox = new BlackBoxProbMotif(analyseMetrics.getAspectRatios(metrics), 10, 1, 4, 0, 20, 0);
 			// blackBox = new
-			// BlackBoxProbMotifInt(analyseMetrics.getXVelocities(metrics), 10,
-			// 1, 4, 0, 20, 0);
+			// BlackBoxProbMotifInt(analyseMetrics.getXCentroid(metrics), 10, 1,
+			// 4, 0, 20, 0);
+			// blackBox = new
+			// BlackBoxProbMotifInt(analyseMetrics.getXEccentricity(metrics),
+			// 10, 1, 4, 0, 20, 0);
+//			blackBox = new BlackBoxProbMotifInt(analyseMetrics.getXVelocities(metrics), 10, 1, 4, 0, 20, 0);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,5 +52,6 @@ public class AnimationCreator {
 
 		int[][] array = blackBox.getMatrixArray();
 		animFH.saveMatrixImage(array);
+
 	}
 }
