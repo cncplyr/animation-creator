@@ -39,7 +39,7 @@ public class AnimationFileHandler {
 	}
 
 
-	public void saveMatrixImage(int[][] matrix) {
+	public void saveMatrixImage(int[][] matrix, String name) {
 		int width = matrix.length;
 		int height = matrix[0].length;
 		BufferedImage matrixImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -48,7 +48,7 @@ public class AnimationFileHandler {
 				if (x == y) {
 					matrixImage.setRGB(y, height - x - 1, Color.GREEN.getRGB());
 				} else if (matrix[x][y] > 3) {
-//					System.out.println(x + " matches " + y);
+					// System.out.println(x + " matches " + y);
 					matrixImage.setRGB(y, height - x - 1, Color.RED.getRGB());
 				} else if (matrix[x][y] > 1) {
 					matrixImage.setRGB(y, height - x - 1, Color.BLACK.getRGB());
@@ -57,10 +57,10 @@ public class AnimationFileHandler {
 				}
 			}
 		}
-		fh.saveImage(matrixImage, "matrix");
+		fh.saveImage(matrixImage, name);
 	}
 
-	public void saveMatrixImage(List<List<Integer>> matrix) {
+	public void saveMatrixImage(List<List<Integer>> matrix, String name) {
 		int width = matrix.size();
 		int height = matrix.get(0).size();
 		BufferedImage matrixImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -77,7 +77,7 @@ public class AnimationFileHandler {
 				}
 			}
 		}
-		fh.saveImage(matrixImage, "matrix");
+		fh.saveImage(matrixImage, name);
 	}
 
 	/**

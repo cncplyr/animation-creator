@@ -9,51 +9,36 @@ import fileHandling.CSVHandler;
 import maths.AverageFinder;
 import maths.StandardDeviation;
 
-public class BlackBoxBruteForce implements BlackBox {
+public class CopyOfBlackBoxBruteForce implements BlackBox {
 	/* Data Variables */
-	private List<Double> data;
 	private List<String> symbolData;
 
-	/* PAA & Symbolise Variables */
-	private int alphaSize; // size of alphabet
+
 	private int framesPerLetter; // size of symbolisation
 
-	/* Mask Variables */
-	private int maskSize; // number of masked vars
 
-	/* Motif Variables */
-	private int kMotifs; // Iterations to perform
+
 	private int subsequenceLength; // Length of motif
 
 	/* Collision Matrix Variables */
 	private int[][] matrixArray;
 
-	/* TODO: Unknown */
-	private int errorRange;
+
 
 
 	private List<String> alphabet = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
 			"W", "X", "Y", "Z");
 
-	public BlackBoxBruteForce() {
-		this.alphaSize = 5;
+	public CopyOfBlackBoxBruteForce() {
 		this.framesPerLetter = 4;
-		this.maskSize = subsequenceLength / 2;
-		this.kMotifs = 5;
 		this.subsequenceLength = 5;
-		this.errorRange = 5;
 	}
 
-	public BlackBoxBruteForce(List<Double> data, int alphaSize, int framesPerLetter, int maskSize, int kMotifs, int subsequenceLength, int errorRange)
+	public CopyOfBlackBoxBruteForce(List<Double> data, int alphaSize, int framesPerLetter, int maskSize, int kMotifs, int subsequenceLength, int errorRange)
 			throws Exception {
 		/* Initialise Variables */
-		this.data = data;
-		this.alphaSize = alphaSize;
 		this.framesPerLetter = framesPerLetter;
-		this.maskSize = maskSize;
-		this.kMotifs = kMotifs;
 		this.subsequenceLength = subsequenceLength;
-		this.errorRange = errorRange;
 
 		/* Symbolise input data */
 		System.out.print("Symbolising... ");
@@ -125,14 +110,9 @@ public class BlackBoxBruteForce implements BlackBox {
 	 * @return
 	 */
 	private List<String> symboliseGaussian(List<Double> data) {
-		AverageFinder avgFinder = new AverageFinder();
-		StandardDeviation sdFinder = new StandardDeviation();
 		List<Double> paa = new ArrayList<Double>();
 		List<String> symbolData = new ArrayList<String>();
 		int finalFrame = data.size() - framesPerLetter;
-
-		// Get break points
-		List<Double> breakPoints = findBreakPoints();
 
 		// Create Piecewise Aggregate Approximation (PAA)
 		int startFrame = 0;
@@ -155,40 +135,16 @@ public class BlackBoxBruteForce implements BlackBox {
 			startFrame += framesPerLetter;
 		}
 
-		// Normalise data
-		Double mean = avgFinder.findMeanDouble(paa);
-		Double sd = sdFinder.findSDDouble(paa);
-		System.out.println("mean: " + mean);
-		System.out.println("sd: " + sd);
-		for (int i = 0; i < paa.size(); i++) {
-			paa.set(i, (paa.get(i) - mean) / sd);
-		}
-
-		// Symbolise data using Normal Distribution
-		boolean assigned = false;
+		// Symbolise data
 		for (Double avg : paa) {
-			for (int i = 0; i < breakPoints.size(); i++) {
-				if (avg <= breakPoints.get(i)) {
-					symbolData.add(alphabet.get(i));
-					assigned = true;
-					break;
-				}
+			if (avg < 0.0d) {
+				symbolData.add(alphabet.get(0));
+			} else {
+				symbolData.add(alphabet.get(1));
 			}
-			if (!assigned) {
-				symbolData.add(alphabet.get(breakPoints.size() - 1));
-			}
-			assigned = false;
 		}
 
 		// Return symbolised data
 		return symbolData;
 	}
-
-	private List<Double> findBreakPoints() {
-		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("data");
-		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
-		return breakpoints.get(alphaSize - 1);
-	}
-
 }
