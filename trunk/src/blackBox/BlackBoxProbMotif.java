@@ -1,6 +1,7 @@
 package blackBox;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +33,8 @@ public class BlackBoxProbMotif implements BlackBox {
 	/* TODO: Unknown */
 	int errorRange;
 
-	List<String> alphabet;
+	private List<String> alphabet = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+			"W", "X", "Y", "Z");
 
 
 	/**
@@ -77,33 +79,6 @@ public class BlackBoxProbMotif implements BlackBox {
 		this.kMotifs = kMotifs;
 		this.subsequenceLength = subsequenceLength;
 		this.errorRange = errorRange;
-		alphabet = new ArrayList<String>();
-		alphabet.add("A");
-		alphabet.add("B");
-		alphabet.add("C");
-		alphabet.add("D");
-		alphabet.add("E");
-		alphabet.add("F");
-		alphabet.add("G");
-		alphabet.add("H");
-		alphabet.add("I");
-		alphabet.add("J");
-		alphabet.add("K");
-		alphabet.add("L");
-		alphabet.add("M");
-		alphabet.add("N");
-		alphabet.add("O");
-		alphabet.add("P");
-		alphabet.add("Q");
-		alphabet.add("R");
-		alphabet.add("S");
-		alphabet.add("T");
-		alphabet.add("U");
-		alphabet.add("V");
-		alphabet.add("W");
-		alphabet.add("X");
-		alphabet.add("Y");
-		alphabet.add("Z");
 
 		/* Symbolise input data */
 		symbolData = symboliseGaussian(data);

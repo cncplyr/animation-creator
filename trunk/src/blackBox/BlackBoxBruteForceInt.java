@@ -9,9 +9,9 @@ import fileHandling.CSVHandler;
 import maths.AverageFinder;
 import maths.StandardDeviation;
 
-public class BlackBoxBruteForce implements BlackBox {
+public class BlackBoxBruteForceInt implements BlackBox {
 	/* Data Variables */
-	private List<Double> data;
+	private List<Integer> data;
 	private List<String> symbolData;
 
 	/* PAA & Symbolise Variables */
@@ -35,7 +35,7 @@ public class BlackBoxBruteForce implements BlackBox {
 	private List<String> alphabet = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
 			"W", "X", "Y", "Z");
 
-	public BlackBoxBruteForce() {
+	public BlackBoxBruteForceInt() {
 		this.alphaSize = 5;
 		this.framesPerLetter = 4;
 		this.maskSize = subsequenceLength / 2;
@@ -44,7 +44,7 @@ public class BlackBoxBruteForce implements BlackBox {
 		this.errorRange = 5;
 	}
 
-	public BlackBoxBruteForce(List<Double> data, int alphaSize, int framesPerLetter, int maskSize, int kMotifs, int subsequenceLength, int errorRange)
+	public BlackBoxBruteForceInt(List<Integer> data, int alphaSize, int framesPerLetter, int maskSize, int kMotifs, int subsequenceLength, int errorRange)
 			throws Exception {
 		/* Initialise Variables */
 		this.data = data;
@@ -124,7 +124,7 @@ public class BlackBoxBruteForce implements BlackBox {
 	 * @param data
 	 * @return
 	 */
-	private List<String> symboliseGaussian(List<Double> data) {
+	private List<String> symboliseGaussian(List<Integer> data) {
 		AverageFinder avgFinder = new AverageFinder();
 		StandardDeviation sdFinder = new StandardDeviation();
 		List<Double> paa = new ArrayList<Double>();
@@ -143,7 +143,7 @@ public class BlackBoxBruteForce implements BlackBox {
 			// Calculate average of current window
 			currentAvg = 0.0d;
 			for (int f = startFrame; f < startFrame + framesPerLetter; f++) {
-				currentFrame = data.get(f);
+				currentFrame = (double) data.get(f);
 				currentAvg += currentFrame;
 			}
 			currentAvg = currentAvg / framesPerLetter;
