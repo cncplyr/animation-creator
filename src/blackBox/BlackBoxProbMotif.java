@@ -24,7 +24,7 @@ public class BlackBoxProbMotif implements BlackBox {
 	int maskSize; // number of masked vars
 
 	/* Motif Variables */
-	int kMotifs; // Iterations to perform
+	int kMotifs; // Return motifs with greater than k matches
 	int subsequenceLength; // Length of motif
 
 	/* Collision Matrix Variables */
@@ -230,7 +230,7 @@ public class BlackBoxProbMotif implements BlackBox {
 
 	private List<Double> findBreakPoints() {
 		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("data");
+		csvh.setInputFolder("data");
 		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
 		return breakpoints.get(alphaSize - 1);
 	}

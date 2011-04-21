@@ -28,11 +28,11 @@ public class AnimationCreator {
 	private static BlackBox blackBox;
 	private static List<Metrics> metrics;
 
-	private static int ALPHASIZE = 7;
-	private static int FRAMESPERLETTER = 1;
+	private static int ALPHASIZE = 10;
+	private static int FRAMESPERLETTER = 4;
 	private static int MASKSIZE = 4;
 	private static int MOTIFS = 0;
-	private static int SUBSEQUENCE = 4;
+	private static int SUBSEQUENCE = 5;
 	private static int ERROR = 0;
 
 	public static void main(String[] args) {
@@ -46,9 +46,9 @@ public class AnimationCreator {
 		// int kMotifs, int subsequenceLength, int errorRange
 		// Create our black box, with the data.
 		try {
-			// blackBox = new
-			// BlackBoxProbMotif(analyseMetrics.getAspectRatios(metrics), 5, 1,
-			// 0, 0, 5, 0);
+			 blackBox = new
+			 BlackBoxProbMotif(analyseMetrics.getAspectRatios(metrics), 5, 1,
+			 0, 0, 5, 0);
 			// blackBox = new
 			// BlackBoxProbMotifInt(analyseMetrics.getXCentroid(metrics), 10, 1,
 			// 4, 0, 20, 0);
@@ -60,13 +60,13 @@ public class AnimationCreator {
 			// 1, 4, 0, 20, 0);
 
 			// Brute Force Motif Search
-			// blackBox = new BlackBoxBruteForce(generateSine(1000), ALPHASIZE,
-			// FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE, ERROR);
-			// blackBox = new CopyOfBlackBoxBruteForce(generateSine(1000),
-			// ALPHASIZE, FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE,
-			// ERROR);
+//			 blackBox = new BlackBoxBruteForce(generateSine(1000), ALPHASIZE,
+//			 FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE, ERROR);
+//			 blackBox = new CopyOfBlackBoxBruteForce(generateSine(1000),
+//			 ALPHASIZE, FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE,
+//			 ERROR);
 
-			blackBox = new BlackBoxBruteForceInt(analyseMetrics.getXVelocities(metrics), ALPHASIZE, FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE, ERROR);
+//			blackBox = new BlackBoxBruteForce(analyseMetrics.getAspectRatios(metrics), ALPHASIZE, FRAMESPERLETTER, MASKSIZE, MOTIFS, SUBSEQUENCE, ERROR);
 
 
 		} catch (Exception e) {

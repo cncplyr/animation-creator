@@ -254,7 +254,7 @@ public class BlackBoxProbMotifInt implements BlackBox {
 
 	private List<Double> findBreakPoints() {
 		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("data");
+		csvh.setInputFolder("data");
 		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
 		return breakpoints.get(alphaSize - 1);
 	}

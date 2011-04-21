@@ -2,6 +2,7 @@ package blackBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import fileHandling.CSVHandler;
@@ -13,6 +14,7 @@ public class BlackBoxBruteForce implements BlackBox {
 	/* Data Variables */
 	private List<Double> data;
 	private List<String> symbolData;
+	HashMap<String, List<Integer>> hash;
 
 	/* PAA & Symbolise Variables */
 	private int alphaSize; // size of alphabet
@@ -22,7 +24,7 @@ public class BlackBoxBruteForce implements BlackBox {
 	private int maskSize; // number of masked vars
 
 	/* Motif Variables */
-	private int kMotifs; // Iterations to perform
+	private int kMotifs; // Return motifs with greater than k matches
 	private int subsequenceLength; // Length of motif
 
 	/* Collision Matrix Variables */
@@ -35,19 +37,11 @@ public class BlackBoxBruteForce implements BlackBox {
 	private List<String> alphabet = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
 			"W", "X", "Y", "Z");
 
-	public BlackBoxBruteForce() {
-		this.alphaSize = 5;
-		this.framesPerLetter = 4;
-		this.maskSize = subsequenceLength / 2;
-		this.kMotifs = 5;
-		this.subsequenceLength = 5;
-		this.errorRange = 5;
-	}
-
 	public BlackBoxBruteForce(List<Double> data, int alphaSize, int framesPerLetter, int maskSize, int kMotifs, int subsequenceLength, int errorRange)
 			throws Exception {
 		/* Initialise Variables */
 		this.data = data;
+		this.hash = new HashMap<String, List<Integer>>();
 		this.alphaSize = alphaSize;
 		this.framesPerLetter = framesPerLetter;
 		this.maskSize = maskSize;
@@ -62,6 +56,11 @@ public class BlackBoxBruteForce implements BlackBox {
 
 		int matrixSize = symbolData.size() - subsequenceLength;
 		matrixArray = new int[matrixSize][matrixSize];
+		for (int x = 0; x < matrixSize; x++) {
+			for (int y = 0; y < matrixSize; y++) {
+				matrixArray[x][y] = 0;
+			}
+		}
 
 		/* Perform Checks */
 		// Data length longer than single subsequence
@@ -108,7 +107,7 @@ public class BlackBoxBruteForce implements BlackBox {
 				}
 				// Compare them
 				if (searchSequence.equals(currentSequence)) {
-					matrixArray[sequenceStart][searchStart] = 5;
+					matrixArray[sequenceStart][searchStart]++;
 				}
 				// Clear our current sequence for next iteration
 				currentSequence = "";
@@ -186,9 +185,27 @@ public class BlackBoxBruteForce implements BlackBox {
 
 	private List<Double> findBreakPoints() {
 		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("data");
+		csvh.setInputFolder("data");
 		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
 		return breakpoints.get(alphaSize - 1);
+	}
+
+	private void putIntoBucket(String key, Integer value) {
+		// Create a bucket
+		List<Integer> bucket = new ArrayList<Integer>();
+		// If bucket already exists
+		if (hash.containsKey(key)) {
+			List<Integer> oldVals = hash.get(key);
+			// Copy existing bucket into new bucket
+			bucket.addAll(hash.get(key));
+			// update collision matrix
+			matrixArray[hash.get(key).get(0)][value] += 1;
+			System.out.println(matrixArray[hash.get(key).get(0)][value]);
+		}
+		// Add our new value
+		bucket.add(value);
+		// Replace old bucket with new bucket
+		hash.put(key, bucket);
 	}
 
 }
