@@ -47,10 +47,7 @@ public class AnimationFileHandler {
 			for (int y = 0; y < height; y++) {
 				if (x == y) {
 					matrixImage.setRGB(y, height - x - 1, Color.GREEN.getRGB());
-				} else if (matrix[x][y] > 3) {
-					// System.out.println(x + " matches " + y);
-					matrixImage.setRGB(y, height - x - 1, Color.RED.getRGB());
-				} else if (matrix[x][y] > 1) {
+				} else if (matrix[x][y] > 0) {
 					matrixImage.setRGB(y, height - x - 1, Color.BLACK.getRGB());
 				} else {
 					matrixImage.setRGB(y, height - x - 1, Color.WHITE.getRGB());
@@ -68,9 +65,7 @@ public class AnimationFileHandler {
 			for (int y = 0; y < height; y++) {
 				if (x == y) {
 					matrixImage.setRGB(y, height - x - 1, Color.GREEN.getRGB());
-				} else if (matrix.get(x).get(y) > 1) {
-					matrixImage.setRGB(y, height - x - 1, Color.RED.getRGB());
-				} else if (matrix.get(x).get(y) > 1) {
+				} else if (matrix.get(x).get(y) > 0) {
 					matrixImage.setRGB(y, height - x - 1, Color.BLACK.getRGB());
 				} else {
 					matrixImage.setRGB(y, height - x - 1, Color.WHITE.getRGB());
@@ -88,7 +83,7 @@ public class AnimationFileHandler {
 	 */
 	private List<Metrics> loadMetrics() {
 		CSVHandler csvh = new CSVHandler();
-		csvh.setCSVFolder("output");
+		csvh.setInputFolder("output");
 		csvh.setFileName("metrics");
 		List<int[]> rawData = csvh.readCSVint();
 		List<Metrics> metrics = new ArrayList<Metrics>();
