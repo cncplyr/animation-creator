@@ -2,6 +2,7 @@ package blackBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import fileHandling.CSVHandler;
@@ -189,6 +190,12 @@ public class BlackBoxBruteForceInt implements BlackBox {
 		csvh.setInputFolder("data");
 		List<List<Double>> breakpoints = csvh.readCSVdouble("normalBreakPoints");
 		return breakpoints.get(alphaSize - 1);
+	}
+
+	@Override
+	public HashMap<String, List<Integer>> getHash() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import fileHandling.CSVHandler;
 
@@ -78,11 +79,6 @@ public class BlackBoxBruteForce implements BlackBox {
 	}
 
 	@Override
-	public int[][] getMatrixArray() {
-		return matrixArray;
-	}
-
-	@Override
 	public void iterate(int iterations) {
 		System.out.println("Finding Motifs!");
 		findMotif();
@@ -99,6 +95,7 @@ public class BlackBoxBruteForce implements BlackBox {
 				searchSequence += symbolData.get(i);
 			}
 			System.out.println("Searching for: " + searchSequence);
+			putIntoBucket(searchSequence, sequenceStart);
 			// Search for the sequence!
 			for (int searchStart = 0; searchStart < finalFrame; searchStart++) {
 				// Get the current sequence
@@ -108,12 +105,31 @@ public class BlackBoxBruteForce implements BlackBox {
 				// Compare them
 				if (searchSequence.equals(currentSequence)) {
 					matrixArray[sequenceStart][searchStart]++;
+					putIntoBucket(searchSequence, searchStart);
 				}
 				// Clear our current sequence for next iteration
 				currentSequence = "";
 			}
 		}
 	}
+
+	@Override
+	public int[][] getMatrixArray() {
+		return matrixArray;
+	}
+
+	public HashMap<String, List<Integer>> getHash() {
+		Set<String> keys = hash.keySet();
+		HashMap<String, List<Integer>> kHash = new HashMap<String, List<Integer>>();
+		for (String key : keys) {
+			if (hash.get(key).size() > kMotifs) {
+				kHash.put(key, hash.get(key));
+			}
+		}
+
+		return kHash;
+	}
+
 
 	/**
 	 * Takes a list of doubles, and symbolises it by Piecewise Aggregate
@@ -191,20 +207,15 @@ public class BlackBoxBruteForce implements BlackBox {
 	}
 
 	private void putIntoBucket(String key, Integer value) {
-		// Create a bucket
-		List<Integer> bucket = new ArrayList<Integer>();
-		// If bucket already exists
+		List<Integer> bucket;
 		if (hash.containsKey(key)) {
-			List<Integer> oldVals = hash.get(key);
-			// Copy existing bucket into new bucket
-			bucket.addAll(hash.get(key));
-			// update collision matrix
-			matrixArray[hash.get(key).get(0)][value] += 1;
-			System.out.println(matrixArray[hash.get(key).get(0)][value]);
+			bucket = hash.get(key);
+		} else {
+			bucket = new ArrayList<Integer>();
 		}
-		// Add our new value
-		bucket.add(value);
-		// Replace old bucket with new bucket
+		if (!bucket.contains(value)) {
+			bucket.add(value);
+		}
 		hash.put(key, bucket);
 	}
 
