@@ -13,44 +13,35 @@ import javax.swing.JPanel;
 
 import animation.CharacterAnimation;
 
-public class AnimationChooser extends JPanel implements Runnable {
+public class AnimChooser extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	private Thread timer;
 	private final int DELAY = 25;
-	private boolean threadSuspended = false;
+	private boolean threadSuspended;
 
 	private Map<String, CharacterAnimation> animations;
-	private String[] keys;
-	private int currentAnimation;
 
 	private int width, height;
 
-	public AnimationChooser(int width, int height) {
+
+	public AnimChooser(int width, int height, Map<String, CharacterAnimation> animations) {
 		addKeyListener(new AnimAdapter());
 		setFocusable(true);
-		setBackground(Color.WHITE);
+		setBackground(Color.BLUE);
 		setDoubleBuffered(true);
 
-		currentAnimation = 0;
+		this.animations = animations;
 
 		this.width = width;
 		this.height = height;
-	}
-
-	public void setAnimations(Map<String, CharacterAnimation> animations) {
-		this.animations = animations;
-		this.keys = animations.keySet().toArray(new String[0]);
-
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLACK);
-
-		g2d.drawImage(animations.get(keys[currentAnimation]).getImage(), 300, 50, this);
+		g2d.fillRect(0, 0, width, height);
 
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -67,10 +58,9 @@ public class AnimationChooser extends JPanel implements Runnable {
 	}
 
 	public void cycle() {
-		animations.get(keys[currentAnimation]).update();
+		// TODO: Anything to call routinely goes here
 	}
 
-	@Override
 	public void run() {
 		long beforeTime, timeDiff, sleep;
 
@@ -86,22 +76,25 @@ public class AnimationChooser extends JPanel implements Runnable {
 			if (sleep < 0) {
 				sleep = 2;
 			}
+
 			try {
 				Thread.sleep(sleep);
 
 				if (isThreadSuspended()) {
 					synchronized (this) {
-						while (isThreadSuspended())
+						while (isThreadSuspended()) {
 							wait();
+						}
 					}
 				}
 			} catch (InterruptedException e) {
-				System.out.println("Interrupted");
+				System.out.println("Interrupted!");
 			}
 
 			beforeTime = System.currentTimeMillis();
 		}
 	}
+
 
 	public void setThreadSuspended(boolean threadSuspended) {
 		this.threadSuspended = threadSuspended;
@@ -112,18 +105,20 @@ public class AnimationChooser extends JPanel implements Runnable {
 	}
 
 	private class AnimAdapter extends KeyAdapter {
-
+		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.print("down");
+
 		}
 
+		@Override
 		public void keyReleased(KeyEvent e) {
-			System.out.println("up");
+
 		}
 
-	
+		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println("typed");
+
 		}
 	}
+
 }

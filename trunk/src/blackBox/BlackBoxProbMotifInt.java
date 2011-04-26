@@ -278,4 +278,10 @@ public class BlackBoxProbMotifInt implements BlackBox {
 		// Replace old bucket with new bucket
 		hash.put(key, bucket);
 	}
+
+	@Override
+	public HashMap<String, List<Integer>> getHash() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
