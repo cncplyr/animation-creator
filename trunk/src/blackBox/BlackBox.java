@@ -3,12 +3,17 @@ package blackBox;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ *
+ */
 public interface BlackBox {
 
-	void iterate(int iterations);
+	public void iterate(int iterations);
+	
+	public int[][] getMatrixArray();
 
-	int[][] getMatrixArray();
-
-	HashMap<String, List<Integer>> getHash();
+	public HashMap<String, List<Integer>> getHash();
 }

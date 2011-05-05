@@ -5,6 +5,12 @@ import java.util.List;
 
 import metrics.Metrics;
 
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ *
+ */
 public class AnalyseMetrics {
 
 	public AnalyseMetrics() {

@@ -29,8 +29,8 @@ import gui.GUI;
 /**
  * This class acts as the entry point to the project.
  * 
- * @author cncplyr
- * @version 0.1
+ * @author Richard Jenkin
+ * @version 0.5
  * 
  */
 public class AnimationCreator {

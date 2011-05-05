@@ -13,6 +13,12 @@ import javax.swing.JPanel;
 
 import animation.CharacterAnimation;
 
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ *
+ */
 public class AnimationChooser extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
