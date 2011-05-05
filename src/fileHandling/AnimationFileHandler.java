@@ -11,6 +11,7 @@ import metrics.Metrics;
  * Handles files for the animation creation project.
  * 
  * @author Richard Jenkin
+ * @version 0.5
  * 
  */
 public class AnimationFileHandler {

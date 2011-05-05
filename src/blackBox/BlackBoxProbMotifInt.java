@@ -10,6 +10,12 @@ import fileHandling.CSVHandler;
 import maths.AverageFinder;
 import maths.StandardDeviation;
 
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ *
+ */
 public class BlackBoxProbMotifInt implements BlackBox {
 	/* Data Variables */
 	List<Integer> data;

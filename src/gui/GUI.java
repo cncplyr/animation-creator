@@ -6,6 +6,12 @@ import javax.swing.JFrame;
 
 import animation.CharacterAnimation;
 
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ *
+ */
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	AnimationChooser ac;

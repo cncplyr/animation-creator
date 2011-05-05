@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 
+ * @author Richard Jenkin
+ * @version 0.5
+ * 
+ */
 public class BlackBoxManual implements BlackBox {
 
 	@Override
